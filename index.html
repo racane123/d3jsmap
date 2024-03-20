@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Los Angeles Boundary</title>
+    <style>
+      /* Define the styles for the map container */
+      #map-container {
+        width: 800px;
+        height: 600px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map-container"></div>
+
+    <!-- Include D3.js library -->
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+
+    <script>
+      // JavaScript code
+      // Define the dimensions of the map
+      var width = 800;
+      var height = 600;
+
+      // Create an SVG element and append it to the map container
+      var svg = d3
+        .select("#map-container")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      // Load the boundary data using D3's JSON function
+      d3.json("path/los-angeles.json").then(function (boundaryData) {
+        // Create a projection for the map
+        var projection = d3.geoIdentity().fitSize([width, height], boundaryData);
+
+        // Create a path generator
+        var path = d3.geoPath().projection(projection);
+
+        // Draw the boundary
+        svg
+          .selectAll("path")
+          .data(boundaryData.features)
+          .enter()
+          .append("path")
+          .attr("d", path)
+          .attr("fill", "grey")
+          .attr("stroke", "black");
+      });
+    </script>
+  </body>
+</html>
