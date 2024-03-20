@@ -35,7 +35,12 @@
       // Load the boundary data using D3's JSON function
       d3.json("path/los-angeles.json").then(function (boundaryData) {
         // Create a projection for the map
-        var projection = d3.geoIdentity().fitSize([width, height], boundaryData);
+        var projection = d3
+          .geoTransverseMercator()
+          .rotate([120.3333333333333, 0])
+          .center([0, 36])
+          .translate([width / 2, height / 2]) 
+          .fitSize([width, height], boundaryData);
 
         // Create a path generator
         var path = d3.geoPath().projection(projection);
